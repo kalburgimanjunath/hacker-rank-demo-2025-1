@@ -22,12 +22,12 @@ const AlarmClock = () => {
     return () => clearInterval(interval);
   }, [alarmTime, alarmTriggered]);
 
-  const handleAlarmChange = (e) => {
+  const handleAlarmChange = (e: any) => {
     setAlarmTime(e.target.value);
     setAlarmTriggered(false); // Reset on alarm change
   };
 
-  const formatTime = (date) => {
+  const formatTime = (date: any) => {
     const hours = date.getHours().toString().padStart(2, "0");
     const mins = date.getMinutes().toString().padStart(2, "0");
     const secs = date.getSeconds().toString().padStart(2, "0");
@@ -58,7 +58,7 @@ const styles = {
   container: {
     fontFamily: "Arial",
     textAlign: "center",
-    marginTop: "50px",
+    marginTop: "150px",
   },
   title: {
     fontSize: "2em",
