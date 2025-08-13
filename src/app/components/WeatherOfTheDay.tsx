@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 
+type CurrentWeather = {
+  temperature: number;
+  windspeed: number;
+  weathercode: number;
+  time: string;
+};
+
 const WeatherOfTheDay = () => {
-  const [weather, setWeather] = useState(null);
+  const [weather, setWeather] = useState<CurrentWeather | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchWeather = async () => {
@@ -34,16 +41,16 @@ const WeatherOfTheDay = () => {
       ) : weather ? (
         <div style={styles.card}>
           <p>
-            Temperature: <strong>{weather.temperature}°C</strong>
+            Temperature: <strong>{weather?.temperature}°C</strong>
           </p>
           <p>
-            Wind Speed: <strong>{weather.windspeed} km/h</strong>
+            Wind Speed: <strong>{weather?.windspeed} km/h</strong>
           </p>
           <p>
-            Weather Code: <strong>{weather.weathercode}</strong>
+            Weather Code: <strong>{weather?.weathercode}</strong>
           </p>
           <p>
-            Time: <strong>{weather.time}</strong>
+            Time: <strong>{weather?.time}</strong>
           </p>
         </div>
       ) : (
@@ -56,7 +63,6 @@ const WeatherOfTheDay = () => {
 const styles = {
   container: {
     fontFamily: "Arial",
-    textAlign: "center",
     marginTop: "50px",
   },
   title: {

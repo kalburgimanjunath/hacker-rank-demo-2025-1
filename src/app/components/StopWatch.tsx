@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const formatTime = (ms) => {
+interface FormatTime {
+  (ms: number): string;
+}
+
+const formatTime: FormatTime = (ms) => {
   const minutes = Math.floor(ms / 60000)
     .toString()
     .padStart(2, "0");
@@ -16,7 +20,7 @@ const formatTime = (ms) => {
 const Stopwatch = () => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const intervalRef = useRef(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (isRunning) {
@@ -24,10 +28,10 @@ const Stopwatch = () => {
         setTime((prevTime) => prevTime + 10); // update every 10ms
       }, 10);
     } else {
-      clearInterval(intervalRef.current);
+      clearInterval(intervalRef.current!);
     }
 
-    return () => clearInterval(intervalRef.current);
+    return () => clearInterval(intervalRef.current!);
   }, [isRunning]);
 
   const startStop = () => setIsRunning((prev) => !prev);
@@ -52,10 +56,18 @@ const Stopwatch = () => {
   );
 };
 
-const styles = {
+import type { CSSProperties } from "react";
+
+const styles: {
+  container: CSSProperties;
+  title: CSSProperties;
+  display: CSSProperties;
+  controls: CSSProperties;
+  button: CSSProperties;
+} = {
   container: {
     fontFamily: "Arial",
-    textAlign: "center",
+    textAlign: "center" as CSSProperties["textAlign"],
     marginTop: "50px",
   },
   title: {

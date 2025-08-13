@@ -6,7 +6,7 @@ import Timer from "./Timer";
 import WeatherOfTheDay from "./WeatherOfTheDay";
 
 const Orientation = () => {
-  const [angle, setAngle] = useState(window.screen.orientation?.angle || 0);
+  const [angle, setAngle] = useState(0); // Initialize with 0
 
   useEffect(() => {
     const getOrientationAngle = () => {

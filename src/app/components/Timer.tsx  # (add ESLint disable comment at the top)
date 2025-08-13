@@ -1,0 +1,7 @@
+/ eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-object-type */
+
+const Timer = () => {
+    return <div>Timer Component</div>;
+};
+
+export default Timer;

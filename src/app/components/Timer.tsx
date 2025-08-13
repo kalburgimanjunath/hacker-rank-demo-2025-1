@@ -1,6 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const formatTime = (seconds) => {
+interface Styles {
+  container: React.CSSProperties;
+  title: React.CSSProperties;
+  inputSection: React.CSSProperties;
+  input: React.CSSProperties;
+  timer: React.CSSProperties;
+  controls: React.CSSProperties;
+  button: React.CSSProperties;
+}
+
+const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60)
     .toString()
     .padStart(2, "0");
@@ -8,11 +18,11 @@ const formatTime = (seconds) => {
   return `${mins}:${secs}`;
 };
 
-const Timer = () => {
+const Timer: React.FC = () => {
   const [inputMinutes, setInputMinutes] = useState(1); // default 1 min
   const [timeLeft, setTimeLeft] = useState(60);
   const [isRunning, setIsRunning] = useState(false);
-  const intervalRef = useRef(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null); // ✅ Fixed type for Node.js/TypeScript
 
   useEffect(() => {
     if (isRunning && timeLeft > 0) {
@@ -20,14 +30,22 @@ const Timer = () => {
         setTimeLeft((prev) => prev - 1);
       }, 1000);
     } else if (timeLeft === 0) {
-      clearInterval(intervalRef.current);
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
+      }
       alert("⏰ Time is up!");
       setIsRunning(false);
     } else {
-      clearInterval(intervalRef.current);
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
+      }
     }
 
-    return () => clearInterval(intervalRef.current);
+    return () => {
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, [isRunning, timeLeft]);
 
   const handleStartPause = () => {
@@ -39,11 +57,14 @@ const Timer = () => {
     setTimeLeft(inputMinutes * 60);
   };
 
-  const handleInputChange = (e) => {
-    const mins = parseInt(e.target.value, 10);
-    setInputMinutes(mins);
-    setTimeLeft(mins * 60);
-    setIsRunning(false);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = e.target.value;
+    const mins = parseInt(value, 10);
+    if (!isNaN(mins) && mins > 0) {
+      setInputMinutes(mins);
+      setTimeLeft(mins * 60);
+      setIsRunning(false);
+    }
   };
 
   return (
@@ -79,11 +100,11 @@ const Timer = () => {
   );
 };
 
-const styles = {
+const styles: Styles = {
   container: {
     fontFamily: "Arial",
-    textAlign: "center",
     marginTop: "50px",
+    textAlign: "center",
   },
   title: {
     fontSize: "2em",
